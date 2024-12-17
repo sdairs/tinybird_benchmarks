@@ -86,7 +86,10 @@ if __name__ == "__main__":
     for namespace, ns_benchmarks in benchmarks.items():
         print(f"\nNamespace: {namespace}")
         
-        for benchmark_name, benchmark_queries in ns_benchmarks.items():
+        # Sort benchmarks by name
+        sorted_benchmarks = dict(sorted(ns_benchmarks.items()))
+        
+        for benchmark_name, benchmark_queries in sorted_benchmarks.items():
             print(f"\nBenchmark: {benchmark_name}")
             
             # Create table

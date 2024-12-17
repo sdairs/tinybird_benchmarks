@@ -1,1 +1,0 @@
-select record.did as did from bluesky_json
