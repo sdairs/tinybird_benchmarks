@@ -1,0 +1,25 @@
+Benchmark: 1_no_filter
+Date: 2024-12-17T16:54:33.612094
+
+Queries:
+
+string.sql:
+```sql
+select count() from bluesky_strings
+```
+
+json.sql:
+```sql
+select count() from bluesky_json
+```
+
+Results:
++--------------+-------------+-------------+
+|    Metric    |    string   |     json    |
++--------------+-------------+-------------+
+|    Status    |   SUCCESS   |   SUCCESS   |
+| Elapsed (s)  | 0.000790035 | 0.000935561 |
+|  Rows Read   |      1      |      1      |
+|  Bytes Read  |      16     |      16     |
+| Duration (s) |   0.09682   |   0.089006  |
++--------------+-------------+-------------+

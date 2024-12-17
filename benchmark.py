@@ -11,6 +11,11 @@ from prettytable import PrettyTable
 # Load environment variables
 load_dotenv()
 
+def ensure_dir(path: str):
+    """Create directory if it doesn't exist"""
+    if not os.path.exists(path):
+        os.makedirs(path)
+
 @dataclass
 class SqlQuery:
     namespace: str
@@ -82,6 +87,9 @@ if __name__ == "__main__":
     for query in queries:
         benchmarks[query.namespace][query.benchmark].append(query)
     
+    # Create results directory
+    date_prefix = datetime.utcnow().strftime("%Y%m%d")
+    
     # Run benchmarks and display results
     for namespace, ns_benchmarks in benchmarks.items():
         print(f"\nNamespace: {namespace}")
@@ -99,7 +107,6 @@ if __name__ == "__main__":
             # Run queries and collect results
             results = []
             for query in benchmark_queries:
-                # print(f"\nRunning {query.name}...")
                 result = run_benchmark(query, token)
                 results.append(result)
             
@@ -110,4 +117,28 @@ if __name__ == "__main__":
             table.add_row(["Bytes Read"] + [r.statistics.bytes_read for r in results])
             table.add_row(["Duration (s)"] + [(r.end_time - r.start_time).total_seconds() for r in results])
             
+            # Print table
             print(table)
+            
+            # Save results
+            result_dir = os.path.join("results", namespace, benchmark_name)
+            ensure_dir(result_dir)
+            result_file = os.path.join(result_dir, f"{date_prefix}.txt")
+            
+            with open(result_file, "w") as f:
+                f.write(f"Benchmark: {benchmark_name}\n")
+                f.write(f"Date: {datetime.utcnow().isoformat()}\n\n")
+                
+                # Write queries
+                f.write("Queries:\n")
+                for query in benchmark_queries:
+                    f.write(f"\n{os.path.basename(query.path)}:\n")
+                    f.write("```sql\n")
+                    f.write(query.content)
+                    if not query.content.endswith('\n'):
+                        f.write('\n')
+                    f.write("```\n")
+                
+                # Write results table
+                f.write("\nResults:\n")
+                f.write(str(table))

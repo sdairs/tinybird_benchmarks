@@ -1,0 +1,29 @@
+Benchmark: 4_agg_by_nested_field
+Date: 2024-12-17T16:54:43.743953
+
+Queries:
+
+string.sql:
+```sql
+SELECT count(), toStartOfHour(left(JSONExtract(record, 'time_us', 'String'), -6)::DateTime) AS time 
+FROM bluesky_strings
+GROUP BY time
+```
+
+json.sql:
+```sql
+SELECT count(), toStartOfHour(left(record.time_us::Nullable(String), -6)::DateTime) AS time 
+FROM bluesky_json
+GROUP BY time
+```
+
+Results:
++--------------+-------------+-------------+
+|    Metric    |    string   |     json    |
++--------------+-------------+-------------+
+|    Status    |   SUCCESS   |   SUCCESS   |
+| Elapsed (s)  | 3.769685491 | 0.557848959 |
+|  Rows Read   |   67929924  |   67929924  |
+|  Bytes Read  | 33953495999 |  1154808708 |
+| Duration (s) |   3.860244  |   0.646916  |
++--------------+-------------+-------------+

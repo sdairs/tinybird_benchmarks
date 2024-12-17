@@ -1,0 +1,29 @@
+Benchmark: 3_filter_by_nested
+Date: 2024-12-17T16:54:39.233776
+
+Queries:
+
+string.sql:
+```sql
+SELECT count()
+FROM bluesky_strings
+where collection = 'commit' and JSONExtract(record, 'commit', 'operation', 'String') == 'create'
+```
+
+json.sql:
+```sql
+SELECT count()
+FROM bluesky_json
+where collection = 'commit' and record.commit.operation == 'create'
+```
+
+Results:
++--------------+-------------+-------------+
+|    Metric    |    string   |     json    |
++--------------+-------------+-------------+
+|    Status    |   SUCCESS   |   SUCCESS   |
+| Elapsed (s)  |  4.01948529 | 0.629284462 |
+|  Rows Read   |   67929924  |   67929924  |
+|  Bytes Read  | 34954173379 |  2645850844 |
+| Duration (s) |   4.188555  |   0.718229  |
++--------------+-------------+-------------+

@@ -1,0 +1,27 @@
+Benchmark: 2_select_nested_field
+Date: 2024-12-17T16:54:34.322691
+
+Queries:
+
+string.sql:
+```sql
+select JSONExtract(record, 'did', 'String') as did from bluesky_strings
+LIMIT 100000
+```
+
+json.sql:
+```sql
+select record.did as did from bluesky_json
+LIMIT 100000
+```
+
+Results:
++--------------+-------------+-------------+
+|    Metric    |    string   |     json    |
++--------------+-------------+-------------+
+|    Status    |   SUCCESS   |   SUCCESS   |
+| Elapsed (s)  | 0.015714766 | 0.008253711 |
+|  Rows Read   |    131072   |    153837   |
+|  Bytes Read  |   65711433  |   7691850   |
+| Duration (s) |   0.299582  |   0.347837  |
++--------------+-------------+-------------+
