@@ -1,0 +1,29 @@
+NODE benchmark_0
+SQL >
+
+    select * from bluesky_strings
+
+
+
+NODE benchmark_1
+SQL >
+
+    select record from bluesky_strings
+
+
+
+NODE benchmark_2
+SQL >
+
+    select JSONExtract(record, 'did', 'String') as did from bluesky_strings
+
+
+
+NODE benchmark_3
+SQL >
+
+    SELECT *
+    FROM bluesky_strings
+    where collection = 'commit' and JSONExtract(record, 'commit', 'operation', 'String') == 'create'
+
+

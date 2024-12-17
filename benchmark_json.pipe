@@ -1,0 +1,29 @@
+NODE benchmark_0
+SQL >
+
+    select * from bluesky_json
+
+
+
+NODE benchmark_1
+SQL >
+
+    select record from bluesky_json
+
+
+
+NODE benchmark_2
+SQL >
+
+    select record.did as did from bluesky_json
+
+
+
+NODE benchmark_3
+SQL >
+
+    SELECT *
+    FROM bluesky_json
+    where collection = 'commit' and record.commit.operation == 'create'
+
+
